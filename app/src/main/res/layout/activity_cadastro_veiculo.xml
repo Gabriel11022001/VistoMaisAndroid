@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.CadastroVeiculoActivity"
+    android:background="@color/cor_fundo_telas" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- menu do topo da tela -->
+        <include layout="@layout/menu_topo" />
+
+        <!-- modelo do veiculo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_label_modelo_veiculo"
+            android:textColor="@color/principal"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp" />
+
+        <EditText
+            android:id="@+id/edt_modelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="Diigte o modelo do veículo..."
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:inputType="text" />
+
+        <!-- marca do veiculo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_label_marca_veiculo"
+            android:textColor="@color/principal"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp" />
+
+        <EditText
+            android:id="@+id/edt_marca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="Diigte a marca do veículo..."
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:inputType="text" />
+
+        <!-- ano de lançamento do veículo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_label_ano_lancamento_veiculo"
+            android:textColor="@color/principal"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp" />
+
+        <EditText
+            android:id="@+id/edt_ano_fabricacao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="Diigte o ano de lançamento do veículo..."
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:inputType="number" />
+
+        <!-- ano do modelo do veículo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_label_ano_modelo_veiculo"
+            android:textColor="@color/principal"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp" />
+
+        <EditText
+            android:id="@+id/edt_ano_modelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="Diigte o ano do modelo do veículo..."
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:inputType="number" />
+
+        <!-- botão de cadastrar/editar o veiculo -->
+        <Button
+            android:id="@+id/btn_salvar_veiculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cadastrar"
+            android:backgroundTint="@color/principal"
+            android:padding="12dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_margin="20dp"
+            android:elevation="3dp"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</ScrollView>

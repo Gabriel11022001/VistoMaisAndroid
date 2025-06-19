@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.Vistomaisandroid" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/principal_variante</item>
+        <item name="colorPrimaryVariant">@color/principal</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/principal_variante</item>
+        <item name="colorSecondaryVariant">@color/principal</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@color/principal</item>
+    </style>
+
+    <style name="Theme.Vistomaisandroid" parent="Base.Theme.Vistomaisandroid">
+        <item name="android:statusBarColor">@color/principal</item>
+    </style>
+
+    <!-- temas do app -->
+
+</resources>

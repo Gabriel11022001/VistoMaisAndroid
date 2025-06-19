@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fundo_adapter"
+    android:padding="5dp"
+    android:elevation="3dp"
+    android:layout_margin="10dp" >
+
+    <ImageView
+        android:id="@+id/img_proprietario_adapter"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_pessoa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/view_separador"
+        android:layout_width="2dp"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_proprietario_adapter"
+        android:background="@color/principal" />
+
+    <!-- nome do proprietário -->
+    <TextView
+        android:id="@+id/txt_nome_completo_proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gabriel Rodrigues dos Santos"
+        app:layout_constraintStart_toEndOf="@id/view_separador"
+        app:layout_constraintTop_toTopOf="@id/view_separador"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic" />
+
+    <!-- cpf do proprietário -->
+    <TextView
+        android:id="@+id/txt_cpf_proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123.456.789-00"
+        app:layout_constraintStart_toStartOf="@id/txt_nome_completo_proprietario"
+        app:layout_constraintTop_toBottomOf="@id/txt_nome_completo_proprietario"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <!-- email do proprietário -->
+    <TextView
+        android:id="@+id/txt_email_proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="teste@teste.com"
+        app:layout_constraintStart_toStartOf="@id/txt_cpf_proprietario"
+        app:layout_constraintTop_toBottomOf="@id/txt_cpf_proprietario"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <!-- email do proprietário -->
+    <TextView
+        android:id="@+id/txt_telefone_proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(14) 99877-0987"
+        app:layout_constraintStart_toStartOf="@id/txt_email_proprietario"
+        app:layout_constraintTop_toBottomOf="@id/txt_email_proprietario"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/txt_seta_direita"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

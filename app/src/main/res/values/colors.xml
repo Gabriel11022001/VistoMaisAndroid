@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="principal">#e03a3f</color>
+    <color name="principal_variante">#b71c1c</color>
+    <color name="cor_fundo_telas">#f5f6fa</color>
+</resources>
