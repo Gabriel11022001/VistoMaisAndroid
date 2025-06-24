@@ -1,6 +1,7 @@
 package com.example.vistomaisandroid.views;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,16 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vistomaisandroid.R;
+import com.example.vistomaisandroid.dto.EnderecoProprietarioDTO;
 import com.example.vistomaisandroid.dto.ProprietarioDTO;
 import com.example.vistomaisandroid.repositorio.ProprietarioRepositorio;
 import com.example.vistomaisandroid.utils.IValida;
 import com.example.vistomaisandroid.utils.ValidaCpf;
 import com.example.vistomaisandroid.utils.ValidaEmail;
+import com.example.vistomaisandroid.utils.ValidaEstaOnline;
 import com.example.vistomaisandroid.utils.ValidaRg;
 
 public class CadastroProprietarioActivity extends AppCompatActivity implements View.OnClickListener {
@@ -67,7 +71,7 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
         btnRetornar.setOnClickListener(this);
 
         try {
-            this.proprietarioRepositorio = new ProprietarioRepositorio();
+            this.proprietarioRepositorio = new ProprietarioRepositorio(this);
         } catch (Exception e) {
             // apresentar alerta de erro ao usuário informando que ocorreu um erro na conexão com a base local do app
         }
@@ -118,11 +122,35 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
         proprietarioDTO.setDataNascimento(this.edtDataNascimento.getText().toString().trim());
         proprietarioDTO.setNumeroCnh(this.edtNumeroCnh.getText().toString().trim());
 
+        EnderecoProprietarioDTO enderecoProprietarioDTO = new EnderecoProprietarioDTO();
+        enderecoProprietarioDTO.setCep(this.edtCep.getText().toString());
+        enderecoProprietarioDTO.setLogradouro("");
+        enderecoProprietarioDTO.setComplemento("");
+        enderecoProprietarioDTO.setCidade("");
+        enderecoProprietarioDTO.setBairro("");
+        enderecoProprietarioDTO.setEstado("");
+        enderecoProprietarioDTO.setNumero("s/n");
+
+        proprietarioDTO.setEnderecoProprietarioDTO(enderecoProprietarioDTO);
+
+        /*if (!ValidaEstaOnline.isOnline(this)) {
+            // o usuário não está conectado na internet, salvar o proprietário somente na base local do app
+            this.proprietarioRepositorio.cadastrar(proprietarioDTO);
+
+            this.apresentarAlertaSucesso("O proprietário foi cadastrado com sucesso na base local do aplicativo, para que o mesmo" +
+                    " seja enviado para o servidor, você precisa se conectar a internet e acessar a listagem de proprietários.");
+
+            return;
+        }*/
+
         // apresentar dados do proprietário que estou tentando cadastrar na base de dados
         Log.d("cadastro_proprietario", proprietarioDTO.toString());
 
-        // cadastrar o proprietário na base local do app
+        // enviar o proprietário primeiro para o servidor, se der certo, salvar na base local
         this.proprietarioRepositorio.cadastrar(proprietarioDTO);
+
+        this.apresentarAlertaSucesso("O proprietário foi cadastrado com sucesso na base local do aplicativo, para que o mesmo" +
+                " seja enviado para o servidor, você precisa se conectar a internet e acessar a listagem de proprietários.");
     }
 
     // editar proprietario
@@ -135,6 +163,7 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
         Log.d("get_endereco", "Consultando endereço do proprietário pelo cep: " + cep);
     }
 
+    // apresentar alerta de erro para o usuário
     private void apresentarAlertaErro(String mensagemErro) {
         AlertDialog.Builder builderAlertDialogErroProprietario = new AlertDialog.Builder(this);
 
@@ -143,6 +172,15 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
 
         builderAlertDialogErroProprietario.setPositiveButton("OK", null);
         builderAlertDialogErroProprietario.create().show();
+    }
+
+    // apresentar alerta de sucesso para o usuário
+    private void apresentarAlertaSucesso(String mensagemSucesso) {
+        Toast.makeText(this, mensagemSucesso, Toast.LENGTH_LONG)
+                .show();
+
+        startActivity(new Intent(this, ProprietariosActivity.class));
+        finish();
     }
 
     // valdar campos ao tentar-se salvar o proprietário

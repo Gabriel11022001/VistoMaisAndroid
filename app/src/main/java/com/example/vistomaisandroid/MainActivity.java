@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vistomaisandroid.views.CadastroProprietarioActivity;
+import com.example.vistomaisandroid.views.ProprietariosActivity;
 import com.example.vistomaisandroid.views.VeiculosActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (tela.equals("gestao_proprietarios")) {
             // redirecionar o usuário para a tela com a gestão de proprietários
-            intent = new Intent(this, CadastroProprietarioActivity.class);
+            intent = new Intent(this, ProprietariosActivity.class);
         }
 
         if (intent != null) {

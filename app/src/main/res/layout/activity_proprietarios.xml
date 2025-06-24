@@ -21,4 +21,72 @@
         app:layout_constraintTop_toBottomOf="@id/menu_topo_listagem_proprietarios"
         android:layout_marginTop="110dp" />
 
+    <!--
+        TextView informando que não existem
+        proprietários cadastrados na base de dados
+    -->
+    <TextView
+        android:id="@+id/txt_mensagem_nao_possui_proprietarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="@string/txt_nao_existem_proprietarios_cadastrados"
+        android:padding="20dp" />
+
+    <!--
+        botão para redirecionar o usuário para a tela de
+        cadastro de proprietario
+     -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_cadastrar_novo_proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/principal"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp" />
+
+    <!-- loader de carregamento -->
+    <LinearLayout
+        android:id="@+id/loader_carregando_proprietarios"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/cor_fundo_telas"
+        android:padding="20dp"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/black" />
+
+        <!-- TextView com a mensagem do loader -->
+        <TextView
+            android:id="@+id/txt_mensagem_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carregando, aguarde..."
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

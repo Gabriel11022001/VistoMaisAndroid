@@ -1,5 +1,7 @@
 package com.example.vistomaisandroid.repositorio;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.List;
@@ -12,7 +14,11 @@ import java.util.List;
  */
 public abstract class RepositorioBase<T> {
 
-    public RepositorioBase() throws Exception {
+    protected SQLiteDatabase bancoDados = null;
+    private Context contextoApp;
+
+    public RepositorioBase(Context contextoApp) throws Exception {
+        this.contextoApp = contextoApp;
         // implementar a conexão com a base local do app
         this.implementarConexaoBaseDados();
     }
@@ -20,7 +26,9 @@ public abstract class RepositorioBase<T> {
     private void implementarConexaoBaseDados() throws Exception {
 
         try {
+            DatabaseHelper databaseHelper = new DatabaseHelper(this.contextoApp);
 
+            this.bancoDados = databaseHelper.getConexaoBancoDados();
         } catch (Exception e) {
             Log.e("erro_conexao_base", "Erro ao tentar-se realizar a conexão com a base de dados: " + e.getMessage());
 

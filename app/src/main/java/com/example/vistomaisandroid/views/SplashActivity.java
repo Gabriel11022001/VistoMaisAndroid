@@ -3,10 +3,12 @@ package com.example.vistomaisandroid.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vistomaisandroid.R;
+import com.example.vistomaisandroid.repositorio.DatabaseHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -17,6 +19,13 @@ public class SplashActivity extends AppCompatActivity {
 
         if (this.getSupportActionBar() != null) {
             this.getSupportActionBar().hide();
+        }
+
+        // criar base de dados e as tabelas
+        try {
+            DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        } catch (Exception e) {
+            Log.e("erro_criar_base", "Erro ao tentar-se criar o banco de dados: " + e.getMessage());
         }
 
         this.redirecionarUsuarioTelaLogin();
