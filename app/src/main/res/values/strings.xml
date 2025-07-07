@@ -20,4 +20,7 @@
     <string name="txt_label_cnh_proprietario">Número da CNH*</string>
     <string name="txt_label_cep_proprietario">Cep*</string>
     <string name="txt_nao_existem_proprietarios_cadastrados">Não existem proprietários cadastrados na base de dados.</string>
+    <string name="txt_btn_aplicar_filtro_proprietarios">Aplicar filtro</string>
+    <string name="txt_btn_limpar_filtro_proprietarios">Limpar filtro</string>
+    <string name="txt_label_categoria_veiculo">Categoria</string>
 </resources>

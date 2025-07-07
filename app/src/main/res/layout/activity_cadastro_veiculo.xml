@@ -97,6 +97,22 @@
             android:textColor="@color/black"
             android:inputType="number" />
 
+        <!-- categoria do veiculo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_label_categoria_veiculo"
+            android:textColor="@color/principal"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp" />
+
+        <Spinner
+            android:id="@+id/spn_categoria_veiculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp" />
+
         <!-- botão de cadastrar/editar o veiculo -->
         <Button
             android:id="@+id/btn_salvar_veiculo"

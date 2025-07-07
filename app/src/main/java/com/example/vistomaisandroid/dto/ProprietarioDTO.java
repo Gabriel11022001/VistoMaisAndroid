@@ -10,6 +10,7 @@ public class ProprietarioDTO {
     private String telefone;
     private String dataNascimento;
     private String numeroCnh;
+    private int proprietarioIdServidor;
     private EnderecoProprietarioDTO enderecoProprietarioDTO = new EnderecoProprietarioDTO();
 
     public ProprietarioDTO() {}
@@ -97,6 +98,15 @@ public class ProprietarioDTO {
     public EnderecoProprietarioDTO getEnderecoProprietarioDTO() {
 
         return this.enderecoProprietarioDTO;
+    }
+
+    public void setProprietarioIdServidor(int proprietarioIdServidor) {
+        this.proprietarioIdServidor = proprietarioIdServidor;
+    }
+
+    public int getProprietarioIdServidor() {
+
+        return this.proprietarioIdServidor;
     }
 
     // sobreescrevendo o método toString

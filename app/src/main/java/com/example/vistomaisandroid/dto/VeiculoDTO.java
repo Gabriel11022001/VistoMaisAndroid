@@ -13,6 +13,8 @@ public class VeiculoDTO {
     private String cor;
     private int proprietarioId;
     private int categoriaVeiculoId;
+    private ProprietarioDTO proprietarioDTO;
+    private CategoriaVeiculoDTO categoriaVeiculoDTO;
 
     public void setVeiculoId(int veiculoId) {
         this.veiculoId = veiculoId;
@@ -111,6 +113,24 @@ public class VeiculoDTO {
     public int getProprietarioId() {
 
         return this.proprietarioId;
+    }
+
+    public void setProprietarioDTO(ProprietarioDTO proprietarioDTO) {
+        this.proprietarioDTO = proprietarioDTO;
+    }
+
+    public ProprietarioDTO getProprietarioDTO() {
+
+        return this.proprietarioDTO;
+    }
+
+    public void setCategoriaVeiculoDTO(CategoriaVeiculoDTO categoriaVeiculoDTO) {
+        this.categoriaVeiculoDTO = categoriaVeiculoDTO;
+    }
+
+    public CategoriaVeiculoDTO getCategoriaVeiculoDTO() {
+
+        return this.categoriaVeiculoDTO;
     }
 
 }

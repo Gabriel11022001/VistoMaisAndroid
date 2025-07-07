@@ -22,6 +22,8 @@ import com.example.vistomaisandroid.dto.EnderecoProprietarioDTO;
 import com.example.vistomaisandroid.dto.ProprietarioDTO;
 import com.example.vistomaisandroid.model.Proprietario;
 import com.example.vistomaisandroid.repositorio.ProprietarioRepositorio;
+import com.example.vistomaisandroid.utils.FiltroProprietarios;
+import com.example.vistomaisandroid.utils.ValidaEstaOnline;
 import com.example.vistomaisandroid.viewholder.IOnVisualizar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,12 +52,22 @@ public class ProprietariosActivity extends AppCompatActivity {
         this.loader = this.findViewById(R.id.loader_carregando_proprietarios);
         this.txtMensagemLoader = this.findViewById(R.id.txt_mensagem_loader);
         FloatingActionButton btnRedirecionarTelaCadastroNovoProprietario = this.findViewById(R.id.btn_cadastrar_novo_proprietario);
+        FloatingActionButton btnFiltrarProprietarios = this.findViewById(R.id.btn_filtro_proprietarios);
 
         // redirecionar o usuáiro para a tela de cadastro de proprietário
         btnRedirecionarTelaCadastroNovoProprietario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), CadastroProprietarioActivity.class));
+                finish();
+            }
+        });
+
+        // redirecionar usuário para a tela de filtrar proprietários
+        btnFiltrarProprietarios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), FiltroProprietariosActivity.class));
                 finish();
             }
         });
@@ -94,6 +106,23 @@ public class ProprietariosActivity extends AppCompatActivity {
             @Override
             public void visualizar(int idEntidadeVisualizar) {
                 // configurar visualização do proprietário
+                int idProprietario = 0;
+
+                if (ValidaEstaOnline.isOnline(getApplicationContext())) {
+                    // passar o proprietario_id_servidor
+                    // idProprietario = proprietarioRepositorio.buscarIdProprietarioServidor(idEntidadeVisualizar);
+                    idProprietario = idEntidadeVisualizar;
+                } else {
+                    // passar o id_proprietario que é o id na base local do app
+                    idProprietario = idEntidadeVisualizar;
+                }
+
+                Intent intentvisualizarProprietario = new Intent(getApplicationContext(), CadastroProprietarioActivity.class);
+
+                intentvisualizarProprietario.putExtra("proprietario_id_editar", idProprietario);
+
+                startActivity(intentvisualizarProprietario);
+                finish();
             }
         };
 
@@ -110,8 +139,42 @@ public class ProprietariosActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        // listar proprietários
-        this.listarProprietarios();
+        try {
+
+            if (this.getIntent() != null && this.getIntent().getParcelableExtra("filtro_proprietarios") != null) {
+                // filtrar proprietáiros na base local do app
+                this.filtrar(this.getIntent().getParcelableExtra("filtro_proprietarios"));
+
+                return;
+            }
+
+            // listar proprietários
+            this.listarProprietarios();
+        } catch (Exception e) {
+            Log.e("erro_listar_proprietarios", e.getMessage());
+        }
+
+    }
+
+    // filtrar proprietários na base local do app
+    private void filtrar(FiltroProprietarios filtroProprietarios) {
+        this.txtNaoExistemProprietarios.setVisibility(View.GONE);
+        this.recyclerViewListagemProprietarios.setVisibility(View.GONE);
+
+        try {
+            List<ProprietarioDTO> proprietarios = filtroProprietarios.filtrar();
+
+            if (proprietarios.size() == 0) {
+                this.txtNaoExistemProprietarios.setVisibility(View.VISIBLE);
+            } else {
+                this.recyclerViewListagemProprietarios.setVisibility(View.VISIBLE);
+            }
+
+            this.proprietarioAdapter.setProprietarios(proprietarios);
+        } catch (Exception e) {
+            this.apresentarAlertaErro("Erro ao tentar-se filtrar os proprietários,");
+        }
+
     }
 
     /**
@@ -157,38 +220,36 @@ public class ProprietariosActivity extends AppCompatActivity {
                     txtNaoExistemProprietarios.setVisibility(View.GONE);
                     recyclerViewListagemProprietarios.setVisibility(View.VISIBLE);
 
-                    // popular a recyclerview com a listagem dos proprietarios
-                    List<ProprietarioDTO> proprietarios = new ArrayList<>();
-
                     for (Proprietario proprietario : retornoListagem) {
+                        // atualizar os dados dos proprietários na base local do app
                         ProprietarioDTO proprietarioDTO = new ProprietarioDTO();
 
-                        proprietarioDTO.setProprietarioId(proprietario.getProprietarioId());
                         proprietarioDTO.setNomeCompleto(proprietario.getNomeCompleto());
-                        proprietarioDTO.setTelefone(proprietario.getTelefone());
-                        proprietarioDTO.setEmail(proprietario.getEmail());
                         proprietarioDTO.setCpf(proprietario.getCpf());
-                        proprietarioDTO.setNumeroCnh(proprietario.getNumeroCnh());
-                        proprietarioDTO.setDataNascimento(proprietario.getDataNascimento());
                         proprietarioDTO.setRg(proprietario.getRg());
+                        proprietarioDTO.setEmail(proprietario.getEmail());
+                        proprietarioDTO.setTelefone(proprietario.getTelefone());
+                        proprietarioDTO.setDataNascimento(proprietario.getDataNascimento());
+                        proprietarioDTO.setNumeroCnh(proprietario.getNumeroCnh());
 
-                        EnderecoProprietarioDTO enderecoProprietarioDTO = new EnderecoProprietarioDTO();
+                        proprietarioDTO.setEnderecoProprietarioDTO(
+                                new EnderecoProprietarioDTO(
+                                        0,
+                                        proprietario.getCep(),
+                                        proprietario.getComplemento(),
+                                        proprietario.getLogradouro(),
+                                        proprietario.getBairro(),
+                                        proprietario.getCidade(),
+                                        proprietario.getEstado(),
+                                        proprietario.getNumero()
+                                )
+                        );
 
-                        enderecoProprietarioDTO.setCep(proprietario.getCep());
-                        enderecoProprietarioDTO.setComplemento(proprietario.getComplemento());
-                        enderecoProprietarioDTO.setLogradouro(proprietario.getLogradouro());
-                        enderecoProprietarioDTO.setCidade(proprietario.getCidade());
-                        enderecoProprietarioDTO.setBairro(proprietario.getBairro());
-                        enderecoProprietarioDTO.setEstado(proprietario.getEstado());
-                        enderecoProprietarioDTO.setNumero(proprietario.getNumero());
-
-                        proprietarioDTO.setEnderecoProprietarioDTO(enderecoProprietarioDTO);
-
-                        proprietarios.add(proprietarioDTO);
+                        proprietarioRepositorio.editarProprietarioVindoServidor(proprietario.getCpf(), proprietarioDTO);
                     }
 
-                    // setar os proprietários por meio do adapter
-                    proprietarioAdapter.setProprietarios(proprietarios);
+                    // buscar os proprietários da base local do app
+                    proprietarioAdapter.setProprietarios(proprietarioRepositorio.listar());
                 }
 
             }

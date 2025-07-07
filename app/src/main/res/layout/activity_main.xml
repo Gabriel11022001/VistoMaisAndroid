@@ -33,34 +33,34 @@
             android:id="@+id/container_gestao_veiculos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/fundo_adapter"
             android:elevation="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_seja_bem_vindo_usuario_logado"
             android:layout_margin="20dp"
-            android:orientation="vertical" >
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:gravity="center" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="20dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Veiculos"
-                    android:textColor="@color/principal"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:text="Veiculos"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAllCaps="true" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/principal" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_veiculo" />
 
         </LinearLayout>
 
@@ -69,36 +69,38 @@
             android:id="@+id/container_gestao_proprietarios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/fundo_adapter"
             android:elevation="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/container_gestao_veiculos"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
-            android:orientation="vertical" >
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:gravity="center" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="20dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Proprietários"
-                    android:textColor="@color/principal"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:text="Proprietários"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAllCaps="true" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/principal" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_proprietario" />
 
         </LinearLayout>
 

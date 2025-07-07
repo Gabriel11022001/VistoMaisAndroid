@@ -2,11 +2,14 @@ package com.example.vistomaisandroid.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,9 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vistomaisandroid.R;
 import com.example.vistomaisandroid.api.CadastroVeiculoAPI;
 import com.example.vistomaisandroid.api.IOnCadastrarVeiculo;
+import com.example.vistomaisandroid.dto.ProprietarioDTO;
 import com.example.vistomaisandroid.dto.VeiculoDTO;
+import com.example.vistomaisandroid.repositorio.ProprietarioRepositorio;
+import com.example.vistomaisandroid.repositorio.VeiculoRepositorio;
+import com.example.vistomaisandroid.utils.Loader;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CadastroVeiculoActivity extends AppCompatActivity {
@@ -30,6 +38,9 @@ public class CadastroVeiculoActivity extends AppCompatActivity {
     private EditText edtAnoModelo;
     private Button btnSalvar;
     private Set<String> camposObrigatorios = new HashSet<>();
+    private VeiculoRepositorio veiculoRepositorio;
+    private ProprietarioRepositorio proprietarioRepositorio;
+    private Spinner spnCategoriaVeiculo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,7 @@ public class CadastroVeiculoActivity extends AppCompatActivity {
         this.edtAnoFabricacao = this.findViewById(R.id.edt_ano_fabricacao);
         this.edtAnoModelo = this.findViewById(R.id.edt_ano_modelo);
         this.btnSalvar = this.findViewById(R.id.btn_salvar_veiculo);
+        this.spnCategoriaVeiculo = this.findViewById(R.id.spn_categoria_veiculo);
 
         this.btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,21 +89,76 @@ public class CadastroVeiculoActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        try {
+            this.veiculoRepositorio = new VeiculoRepositorio(this);
+            this.proprietarioRepositorio = new ProprietarioRepositorio(this);
+        } catch (Exception e) {
+            // apresentar alerta de erro
+        }
+
+        // configurar os spinners
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        this.buscarCategorias();
+
     }
 
     // buscar no servidor categorias de veiculos
     private void buscarCategorias() {
 
+        try {
+            Loader.apresentar("Consultando as categorias de veiculo, aguarde...", this);
+
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // consultar as categorias na base de dados
+
+                    Loader.fechar();
+
+                    buscarProprietarios();
+                }
+            }, 3000);
+        } catch (Exception e) {
+            Loader.fechar();
+            // apresentar alerta de erro
+        }
+
     }
 
     // buscar no servidor proprietarios para o veiculo
     private void buscarProprietarios() {
+
+        try {
+            Loader.apresentar("Consultando os proprietários, aguarde...", this);
+
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // buscar proprietários na base local do app
+                            List<ProprietarioDTO> proprietarios = proprietarioRepositorio.listar();
+
+                            Loader.fechar();
+
+                            if (proprietarios.size() > 0) {
+
+                            } else {
+                                // apresentar alerta que deve ter proprietário na base para prosseguir com cadastro/edição
+                            }
+
+                        }
+                    }, 3000);
+        } catch (Exception e) {
+            Loader.fechar();
+        }
 
     }
 
@@ -157,8 +224,12 @@ public class CadastroVeiculoActivity extends AppCompatActivity {
         veiculoDTOCadastrar.setMarca(this.edtMarca.getText().toString());
         veiculoDTOCadastrar.setAnoFabricacao(Integer.parseInt(this.edtAnoFabricacao.getText().toString()));
         veiculoDTOCadastrar.setAnoModelo(Integer.parseInt(this.edtAnoModelo.getText().toString()));
+        veiculoDTOCadastrar.setPlaca("");
+        veiculoDTOCadastrar.setNumeroChassi("");
+        veiculoDTOCadastrar.setRenavam("");
+        veiculoDTOCadastrar.setCor("");
 
-        CadastroVeiculoAPI.cadastrarVeiculo(veiculoDTOCadastrar, new IOnCadastrarVeiculo() {
+        /*CadastroVeiculoAPI.cadastrarVeiculo(veiculoDTOCadastrar, new IOnCadastrarVeiculo() {
             @Override
             public void onRealizandoRequisicao() {
                 // realizando a requisição para o servidor, apresentar loader para o usuário
@@ -173,7 +244,7 @@ public class CadastroVeiculoActivity extends AppCompatActivity {
             public void onErro(String mensagemErro) {
                 // erro na hora de realizar o cadastro no servidor, apresentar alerta de erro
             }
-        });
+        });*/
     }
 
     // editar veiculo

@@ -54,6 +54,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="20dp" />
 
+    <!-- botão para filtrar os proprietários -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_filtro_proprietarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/principal"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="@id/btn_cadastrar_novo_proprietario"
+        app:layout_constraintBottom_toTopOf="@id/btn_cadastrar_novo_proprietario"
+        android:layout_marginBottom="10dp" />
+
     <!-- loader de carregamento -->
     <LinearLayout
         android:id="@+id/loader_carregando_proprietarios"

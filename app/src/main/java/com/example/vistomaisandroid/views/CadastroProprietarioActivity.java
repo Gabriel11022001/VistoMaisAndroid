@@ -1,6 +1,7 @@
 package com.example.vistomaisandroid.views;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -79,6 +80,8 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
         if (this.getIntent() != null && this.getIntent().getIntExtra("proprietario_id_editar", 0) != 0) {
             this.proprietarioIdEditar = this.getIntent().getIntExtra("proprietario_id_editar", 0);
 
+            this.btnSalvarProprietario.setText("Salvar");
+
             // buscar proprietário pelo id
             this.buscarProprietarioPeloId();
         }
@@ -106,6 +109,29 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
     // buscar o proprietário pelo id e apresentar os dados dele nos campos
     private void buscarProprietarioPeloId() {
 
+        try {
+
+            /*if (ValidaEstaOnline.isOnline(this)) {
+                // buscar proprietário no servidor
+            } else {
+                // buscar proprietário na base local do app
+            }*/
+            ProprietarioDTO proprietarioDTO = this.proprietarioRepositorio.buscarPeloId(this.proprietarioIdEditar);
+
+            this.edtNomeCompleto.setText(proprietarioDTO.getNomeCompleto().trim());
+            this.edtCpf.setText(proprietarioDTO.getCpf());
+            this.edtRg.setText(proprietarioDTO.getRg());
+            this.edtTelefone.setText(proprietarioDTO.getTelefone());
+            this.edtEmail.setText(proprietarioDTO.getEmail());
+            this.edtDataNascimento.setText(proprietarioDTO.getDataNascimento());
+            this.edtNumeroCnh.setText(proprietarioDTO.getNumeroCnh());
+            this.edtCep.setText(proprietarioDTO.getEnderecoProprietarioDTO().getCep());
+        } catch (Exception e) {
+            Log.e("erro_consultar_proprietario", "Erro ao tentar-se buscar o proprietário pelo id: " + e.getMessage());
+
+            this.apresentarAlertaErro("Erro ao tentar-se consultar o proprietário.");
+        }
+
     }
 
     // cadastrar proprietario
@@ -132,6 +158,30 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
         enderecoProprietarioDTO.setNumero("s/n");
 
         proprietarioDTO.setEnderecoProprietarioDTO(enderecoProprietarioDTO);
+
+        if (!ValidaEstaOnline.isOnline(this)) {
+            boolean prosseguir = true;
+
+            if (this.proprietarioRepositorio.buscarProprietarioPeloCpf(proprietarioDTO.getCpf()) != null) {
+                prosseguir = false;
+                this.apresentarAlertaErro("Já existe outro proprietário cadastrado com esse cpf na base de dados.");
+            } else if (this.proprietarioRepositorio.buscarProprietarioPeloRg(proprietarioDTO.getRg()) != null) {
+                prosseguir = false;
+                this.apresentarAlertaErro("Já existe outro proprietário cadastrado com esse rg na base de dados.");
+            } else if (this.proprietarioRepositorio.buscarProprietarioPeloEmail(proprietarioDTO.getEmail()) != null) {
+                prosseguir = false;
+                this.apresentarAlertaErro("Já existe outro proprietário cadastrado na base de dados com esse e-mail.");
+            } else if (this.proprietarioRepositorio.buscarProprietarioPeloNumeroCnh(proprietarioDTO.getNumeroCnh()) != null) {
+                prosseguir = false;
+                this.apresentarAlertaErro("Já existe outro proprietáiro cadastardo com o mesmo número de cnh na base de dados.");
+            }
+
+            if (!prosseguir) {
+
+                return;
+            }
+
+        }
 
         /*if (!ValidaEstaOnline.isOnline(this)) {
             // o usuário não está conectado na internet, salvar o proprietário somente na base local do app
@@ -245,8 +295,8 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
                 // cadastrar proprietário
                 this.cadastrarProprietario();
             } else {
-                this.editarProprietario();
                 // editar proprietário
+                this.editarProprietario();
             }
 
         } catch (Exception e) {
@@ -269,8 +319,34 @@ public class CadastroProprietarioActivity extends AppCompatActivity implements V
 
     }
 
+    // configurar o retorno para a tela de listagem de proprietários
     private void retornar() {
+        AlertDialog.Builder builderAlertDialogRetornar = new AlertDialog.Builder(this);
 
+        builderAlertDialogRetornar.setTitle("Atenção!");
+        builderAlertDialogRetornar.setMessage("Deseja sair do cadastro de proprietário? Os dados informados até agora serão perdidos.");
+        builderAlertDialogRetornar.setCancelable(false);
+
+        // configurar o botão de ok
+        builderAlertDialogRetornar.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(), ProprietariosActivity.class));
+                finish();
+            }
+        });
+
+        // configurar o botão de "não"
+        builderAlertDialogRetornar.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builderAlertDialogRetornar.create().dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builderAlertDialogRetornar.create();
+
+        alertDialog.show();
     }
 
     // controlar evento de retornar para a listagem de proprietários

@@ -26,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "telefone TEXT NOT NULL," +
                 "email TEXT NOT NULL," +
                 "data_nascimento TEXT NOT NULL," +
-                "numero_cnh TEXT NOT NULL)");
+                "numero_cnh TEXT NOT NULL," +
+                "proprietario_id_servidor INTEGER)");
 
         // criar tabela de endereços dos proprietários
         db.execSQL("CREATE TABLE tb_enderecos(" +
@@ -40,6 +41,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "estado TEXT NOT NULL," +
                 "proprietario_id INTEGER NOT NULL," +
                 "FOREIGN KEY(proprietario_id) REFERENCES tb_proprietarios(proprietario_id))");
+
+        // criar tabela de categorias de veiculos
+        db.execSQL("CREATE TABLE tb_categorias_veiculos(" +
+                "categoria_veiculo_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "nome_categoria TEXT)");
+
+        // criar tabela de veiculos
+        db.execSQL("CREATE TABLE tb_veiculos(" +
+                "veiculo_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "modelo TEXT," +
+                "marca TEXT," +
+                "ano_lancamento INTEGER," +
+                "ano_modelo INTEGER," +
+                "cor TEXT," +
+                "renavam TEXT," +
+                "numero_chassi TEXT," +
+                "categoria_veiculo_id INTEGER," +
+                "proprietario_id INTEGER," +
+                "FOREIGN KEY(categoria_veiculo_id) REFERENCES tb_categorias_veiculos(categoria_veiculo_id)," +
+                "FOREIGN KEY(proprietarios_id) REFERENCES tb_proprietarios(proprietario_id))");
     }
 
     // método invocado para atualizar a estrutura do banco de dados
